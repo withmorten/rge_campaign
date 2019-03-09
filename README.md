@@ -1,6 +1,6 @@
 # rge_campaign
 
-Small, relatively platform independent commandline tool to pack and unpack the genie engine's cpn/cpx Campaign files. Should be compatible with both aoe1 and aoe2, as the format is so simple that it didn't undergo any changes.
+Small, relatively platform independent commandline tool to pack and unpack the genie engine's cpn/cpx Campaign files. Should be compatible with both Age of Empires I and II, as the format is so simple that it didn't undergo any changes.
 
 No external files or libraries beyond gcc via MINGW in MSYS2, or just a normal linux, are required to compile or run this tool.
 
