@@ -6,7 +6,6 @@
 #include <errno.h>
 
 #ifdef _WIN32
-#include <windows.h>
 #include <direct.h>
 #include <fileapi.h>
 #include <handleapi.h>
