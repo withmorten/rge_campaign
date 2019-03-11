@@ -23,7 +23,7 @@
 #define PATH_MAX_WIN 260
 
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 2
+#define VERSION_MINOR 3
 
 typedef struct file_time_info file_time_info;
 

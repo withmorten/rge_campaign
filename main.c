@@ -131,8 +131,8 @@ void RGE_Campaign_write(char *campaign_filename, char *campaign_name, int scenar
 		strncpy(scenario_tmp_name, scenario_offset->name, RGE_MAX_CHAR - 1);
 		strncat(scenario_tmp_name, ",", RGE_MAX_CHAR - 1);
 
-		printf("scenario: %2d, size: %8d, offset: %8X, name: %-20s, file_name: %s\n",
-			i + 1, scenario_offset->size, scenario_offset->offset, scenario_offset->name, scenario_offset->file_name);
+		printf("scenario: %2d, size: %8d, offset: %8X, name: %-20s file_name: %s\n",
+			i + 1, scenario_offset->size, scenario_offset->offset, scenario_tmp_name, scenario_offset->file_name);
 
 		f_i = fopen_d(scenarios[i], "rb");
 		scenario = malloc_d(scenario_offset->size);
