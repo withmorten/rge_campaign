@@ -22,12 +22,6 @@
 
 #define PATH_MAX_WIN 260
 
-enum read_mode
-{
-	READ_MODE_LIST,
-	READ_MODE_EXTRACT
-};
-
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 1
 
@@ -76,7 +70,7 @@ struct RGE_Campaign
 };
 
 void printf_help_exit(int exit_code);
-void RGE_Campaign_read(char *in_filename, char *out_folder, enum read_mode read_mode);
+void RGE_Campaign_read(char *in_filename, char *out_folder);
 void RGE_Campaign_write(char *campaign_filename, char *campaign_name, int scenario_num, char **scenarios);
 
 void *malloc_d(size_t size);
