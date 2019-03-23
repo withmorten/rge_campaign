@@ -16,7 +16,7 @@ lists the contents of `campaign.cpn`.
 
 extracts `campaign.cpn` into `outdir`.
 
-    rge_campaign c `campaign.cpn` `campaign` `scenario1.scn` `scenario2.scn`
+    rge_campaign c campaign.cpn campaign scenario1.scn scenario2.scn
 
 packs `scenario1.scn` and `scenario2.scn` in that order into a campaign file `campaign.cpn` with an internal name `campaign`. You can specificy more scenarios than 2. No idea what the limit is.
 
