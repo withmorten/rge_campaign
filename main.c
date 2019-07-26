@@ -10,7 +10,6 @@ void RGE_Campaign_read(char *in_filename, char *out_folder)
 	file_time_info ti;
 	char out_path[PATH_MAX_WIN];
 	char scenario_tmp_name[RGE_MAX_CHAR];
-	int i;
 
 	f_i = fopen_d(in_filename, "rb");
 
@@ -23,14 +22,11 @@ void RGE_Campaign_read(char *in_filename, char *out_folder)
 	}
 
 	printf("version: %.*s, name: %s, scenarion_num: %d\n",
-		(int)sizeof(int32_t), (char *)&campaign_header->version, campaign_header->name, campaign_header->scenario_num);
+		(int32_t)sizeof(int32_t), (char *)&campaign_header->version, campaign_header->name, campaign_header->scenario_num);
 
 	if (out_folder)
 	{
 		get_file_time_info(&ti, in_filename);
-
-		ti.ctime = ti.mtime;
-		ti.atime = ti.mtime;
 
 		strncat(out_folder, "/", PATH_MAX_WIN);
 	}
@@ -38,7 +34,7 @@ void RGE_Campaign_read(char *in_filename, char *out_folder)
 	campaign->scenario_offsets = calloc_d(campaign_header->scenario_num, sizeof(RGE_Scenario_Offset));
 	fread(campaign->scenario_offsets, sizeof(RGE_Scenario_Offset), campaign_header->scenario_num, f_i);
 
-	for (i = 0; i < campaign_header->scenario_num; i++)
+	for (int32_t i = 0; i < campaign_header->scenario_num; i++)
 	{
 		scenario_offset = &campaign->scenario_offsets[i];
 
@@ -72,7 +68,7 @@ void RGE_Campaign_read(char *in_filename, char *out_folder)
 	fclose(f_i);
 }
 
-void RGE_Campaign_write(char *campaign_filename, char *campaign_name, int scenario_num, char **scenarios)
+void RGE_Campaign_write(char *campaign_filename, char *campaign_name, int32_t scenario_num, char **scenarios)
 {
 	RGE_Campaign *campaign = calloc(1, sizeof(RGE_Campaign));
 	RGE_Campaign_Header *campaign_header = &campaign->campaign_header;
@@ -81,14 +77,13 @@ void RGE_Campaign_write(char *campaign_filename, char *campaign_name, int scenar
 	RGE_Scenario *scenario = NULL;
 	char *scenario_file_name, *scenario_file_ext;
 	char scenario_tmp_name[RGE_MAX_CHAR];
-	int i;
 
 	campaign_header->version = RGE_CAMPAIGN_VERSION;
 	strncpy(campaign_header->name, campaign_name, RGE_MAX_CHAR);
 	campaign_header->scenario_num = scenario_num;
 
 	printf("version: %.*s, name: %s, scenarion_num: %d\n",
-		(int)sizeof(int32_t), (char *)&campaign_header->version, campaign_header->name, campaign_header->scenario_num);
+		(int32_t)sizeof(int32_t), (char *)&campaign_header->version, campaign_header->name, campaign_header->scenario_num);
 
 	campaign->scenario_offsets = calloc_d(scenario_num, sizeof(RGE_Scenario_Offset));
 
@@ -96,11 +91,11 @@ void RGE_Campaign_write(char *campaign_filename, char *campaign_name, int scenar
 
 	campaign->scenario_offsets[0].offset = sizeof(RGE_Campaign_Header) + (campaign_header->scenario_num * sizeof(RGE_Scenario_Offset));
 
-	for (i = 0; i < scenario_num; i++)
+	for (int32_t i = 0; i < scenario_num; i++)
 	{
 		scenario_offset = &campaign->scenario_offsets[i];
 
-		scenario_offset->size = fsize(scenarios[i]);
+		scenario_offset->size = (int32_t)fsize(scenarios[i]);
 
 		if (i)
 		{
@@ -147,13 +142,12 @@ void RGE_Campaign_write(char *campaign_filename, char *campaign_name, int scenar
 
 	fseek(f_o, 0, SEEK_SET);
 
-	fwrite(campaign_header, 1, sizeof(RGE_Campaign_Header), f_o);
-	fwrite(campaign->scenario_offsets, campaign_header->scenario_num, sizeof(RGE_Scenario_Offset), f_o);
-
-	fclose(f_o);
+	fwrite(campaign_header, sizeof(RGE_Campaign_Header), 1, f_o);
+	fwrite(campaign->scenario_offsets, sizeof(RGE_Scenario_Offset), campaign_header->scenario_num, f_o);
 
 	free(campaign->scenario_offsets);
 	free(campaign);
+	fclose(f_o);
 }
 
 void printf_help_exit(int exit_code)
@@ -175,7 +169,7 @@ int main(int argc, char **argv)
 		printf_help_exit(0);
 	}
 
-	if (strlen(argv[1]) != 1)
+	if (argv[1][1])
 	{
 		printf_help_exit(1);
 	}

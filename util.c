@@ -4,7 +4,7 @@ void *malloc_d(size_t size)
 {
     void *m = malloc(size);
 
-    if(m == NULL && size != 0)
+    if (m == NULL && size != 0)
     {
         printf("error: couldn't malloc() %u bytes of memory, exiting\n", (unsigned int)size);
         exit(1);
@@ -30,7 +30,7 @@ FILE *fopen_d(char *path, const char *mode)
 {
     FILE *f = fopen(path, mode);
 
-    if(f == NULL)
+    if (f == NULL)
     {
         printf("error: couldn't fopen() file %s, exiting\n", systemify_path(path));
         exit(1);
@@ -60,58 +60,33 @@ FILE *fopen_r(char *filepath)
     return f;
 }
 
-int fsize(char *filepath)
+uint32_t fsize(char *filepath)
 {
-#ifdef _WIN32
-	HANDLE h = CreateFile_d(filepath, FILE_READ_ATTRIBUTES, 0, NULL, OPEN_EXISTING, 0, NULL);
-	DWORD fs = GetFileSize(h, NULL);
-	CloseHandle(h);
-
-	return fs;
-#else
 	struct stat st;
 
 	stat(filepath, &st);
 
-	return st.st_size;
-#endif
+	return (uint32_t)st.st_size;
 }
 
 void get_file_time_info(file_time_info *ti, char *filepath)
 {
-#ifdef _WIN32
-	HANDLE h = CreateFile_d(filepath, FILE_READ_ATTRIBUTES, 0, NULL, OPEN_EXISTING, 0, NULL);
-
-	GetFileTime(h, &ti->ctime, &ti->atime, &ti->mtime);
-
-	CloseHandle(h);
-#else
 	struct stat st;
 
 	stat(filepath, &st);
 
 	ti->atime = st.st_atime;
 	ti->mtime = st.st_mtime;
-	ti->ctime = st.st_ctime;
-#endif
 }
 
 void set_file_time_info(file_time_info *ti, char *filepath)
 {
-#ifdef _WIN32
-	HANDLE h = CreateFile_d(filepath, FILE_WRITE_ATTRIBUTES, 0, NULL, OPEN_EXISTING, 0, NULL);
-	
-	SetFileTime(h, &ti->ctime, &ti->atime, &ti->mtime);
-
-	CloseHandle(h);
-#else
 	struct utimbuf ut;
 
 	ut.actime = ti->atime;
 	ut.modtime = ti->mtime;
 
 	utime(filepath, &ut);
-#endif
 }
 
 char *strndup(const char *str, size_t size)
@@ -215,18 +190,3 @@ void mkdir_d(char *path)
         exit(1);
     }
 }
-
-#ifdef _WIN32
-HANDLE CreateFile_d(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
-{
-	HANDLE h = CreateFile(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-
-	if (h == INVALID_HANDLE_VALUE)
-	{
-		printf("error: couldn't open file %s with CreateFile(), exiting\n", windowsify_path((char *)lpFileName));
-		exit(1);
-	}
-
-	return h;
-}
-#endif
