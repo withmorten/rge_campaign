@@ -30,10 +30,10 @@ Windows users can download the latest version from the releases page:
 
 The Windows version was compiled with:
 
-    gcc -s -static -o rge_campaign.exe main.c util.c
+    gcc -s -static -O3 -o rge_campaign.exe main.c util.c
 
 Linux users can just compile it themselves with:
 
-    gcc -s -o rge_campaign main.c util.c
+    gcc -s -static -O3 -o rge_campaign main.c util.c
 
 Please let me know if there are any problems doing this.
