@@ -136,6 +136,17 @@ char *windowsify_path(char *path)
     return path;
 }
 
+char *strncpy_d(char *dest, const char *src, size_t n)
+{
+	if (strlen(src) + 1 > n)
+	{
+		printf("Error: String too long: %s\n", src);
+		exit(1);
+	}
+
+	return strncpy(dest, src, n);
+}
+
 int mkdir_p(const char *path)
 {
     // adapted from https://gist.github.com/JonathonReinhart/8c0d90191c38af2dcadb102c4e202950

@@ -76,5 +76,6 @@ void set_file_time_info(file_time_info *ti, char *filepath);
 char *strndup(const char *str, size_t size);
 char *unixify_path(char *path);
 char *windowsify_path(char *path);
+char *strncpy_d(char *dest, const char *src, size_t n);
 int mkdir_p(const char *path);
 void mkdir_d(char *path);
