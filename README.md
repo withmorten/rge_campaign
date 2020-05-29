@@ -26,7 +26,7 @@ The extension determines the campaign version to be created:
 
 * .cpn/.cpx: AoE1 to AoC
 * .aoecpn: AoE1 DE
-* .aoe2campaig: AoE2 DE
+* .aoe2campaign: AoE2 DE
 
 Please create an issue if you encounter problems with this tool. I've tested it to the best of my knowledge.
 
