@@ -23,7 +23,7 @@
 #define PATH_MAX_WIN 260
 
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 4
+#define VERSION_MINOR 5
 
 typedef struct file_time_info file_time_info;
 
@@ -34,7 +34,15 @@ struct file_time_info
 };
 
 #define RGE_MAX_CHAR 255
-#define RGE_CAMPAIGN_VERSION 0x30302E31
+#define RGE_DE2_MAX_CHAR 256
+
+#define RGE_CAMPAIGN_VERSION 0x30302E31 // 1.00
+#define RGE_CAMPAIGN_VERSION_DE1 0x30312E31 // 1.10
+#define RGE_CAMPAIGN_VERSION_DE2 0x30302E32 // 2.00
+
+#define RGE_STRING_ID 0x0A60
+
+#define RGE_DE2_DEPENDENCY_NUM 6
 
 typedef struct RGE_Campaign RGE_Campaign;
 typedef struct RGE_Campaign_Header RGE_Campaign_Header;
@@ -44,7 +52,8 @@ typedef void * RGE_Scenario;
 struct RGE_Campaign_Header
 {
 	int32_t version;
-	char name[RGE_MAX_CHAR];
+	char *name;
+	uint16_t name_len;
 	int32_t scenario_num;
 };
 
@@ -52,8 +61,10 @@ struct RGE_Scenario_Offset
 {
 	int32_t size;
 	int32_t offset;
-	char name[RGE_MAX_CHAR];
-	char file_name[RGE_MAX_CHAR];
+	char *name;
+	uint16_t name_len;
+	char *file_name;
+	uint16_t file_name_len;
 };
 
 struct RGE_Campaign
